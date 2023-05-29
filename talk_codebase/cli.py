@@ -1,7 +1,9 @@
 import os
+import traceback
 
 import fire
 import yaml
+
 
 from talk_codebase.llm import create_vector_store, send_question
 
@@ -64,6 +66,7 @@ def chat(root_dir):
             chat(root_dir)
         else:
             print(f"\n🤖 Error: {e}")
+            traceback.print_exc()
 
 
 def main():
