@@ -48,7 +48,7 @@ def loop(vector_store, api_key, model_name):
         if question.lower() in ('reset history'):
             print("⚠️Chat history reset")
             chat_history=[]
-            break
+            continue
         result = send_question(question, vector_store, api_key, model_name, chat_history=chat_history)
         chat_history.append((question, result["answer"]))
 
