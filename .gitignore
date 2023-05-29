@@ -2,4 +2,5 @@
 /.idea/
 /.vscode/
 /.venv/
-/talk_codebase/__pycache__/
+/talk_codebase/__pycache__/vector_store
+/vector_store/
