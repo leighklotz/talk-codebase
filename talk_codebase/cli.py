@@ -8,7 +8,8 @@ from talk_codebase.llm import create_vector_store, send_question
 
 def get_config():
     home_dir = os.path.expanduser("~")
-    config_path = os.path.join(home_dir, "~/.talk-codebase.yaml")
+    config_path = os.path.join(home_dir, ".talk-codebase.yaml")
+    print(f"config path {config_path}")
     if os.path.exists(config_path):
         with open(config_path, "r") as f:
             config = yaml.safe_load(f)
