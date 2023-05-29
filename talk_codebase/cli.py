@@ -8,7 +8,7 @@ from talk_codebase.llm import create_vector_store, send_question
 
 def get_config():
     home_dir = os.path.expanduser("~")
-    config_path = os.path.join(home_dir, ".config.yaml")
+    config_path = os.path.join(home_dir, "~/.talk-codebase.yaml")
     if os.path.exists(config_path):
         with open(config_path, "r") as f:
             config = yaml.safe_load(f)
@@ -19,7 +19,7 @@ def get_config():
 
 def save_config(config):
     home_dir = os.path.expanduser("~")
-    config_path = os.path.join(home_dir, ".config.yaml")
+    config_path = os.path.join(home_dir, ".talk-codebase.yaml")
     with open(config_path, "w") as f:
         yaml.dump(config, f)
 
