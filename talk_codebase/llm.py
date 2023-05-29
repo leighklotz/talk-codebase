@@ -70,12 +70,12 @@ def create_vector_store(root_dir, openai_api_key, model_name):
     return db
 
 
-def send_question(question, vector_store, openai_api_key, model_name):
+def send_question(question, vector_store, openai_api_key, model_name, chat_history=[]):
     model = ChatOpenAI(model_name=model_name, openai_api_key=openai_api_key, streaming=True,
                        callback_manager=CallbackManager([StreamStdOut()]))
     qa = ConversationalRetrievalChain.from_llm(model,
                                                retriever=vector_store.as_retriever(search_kwargs={"k": 4}),
                                                return_source_documents=True)
-    answer = qa({"question": question, "chat_history": []})
-    print('\n' + '\n'.join([f'📄 {os.path.abspath(s.metadata["source"])}:' for s in answer["source_documents"]]))
-    return answer
+    result = qa({"question": question, "chat_history": chat_history})
+    print('\n' + '\n'.join([f'📄 {os.path.abspath(s.metadata["source"])}:' for s in result["source_documents"]]))
+    return result

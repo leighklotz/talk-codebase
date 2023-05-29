@@ -37,6 +37,7 @@ def configure():
 
 
 def loop(vector_store, api_key, model_name):
+    chat_history = []
     while True:
         question = input("👉 ")
         if not question:
@@ -44,7 +45,12 @@ def loop(vector_store, api_key, model_name):
             continue
         if question.lower() in ('exit', 'quit'):
             break
-        send_question(question, vector_store, api_key, model_name)
+        if question.lower() in ('reset history'):
+            print("⚠️Chat history reset")
+            chat_history=[]
+            break
+        result = send_question(question, vector_store, api_key, model_name, chat_history=chat_history)
+        chat_history.append((question, result["answer"]))
 
 
 def chat(root_dir):
