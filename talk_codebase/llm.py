@@ -10,6 +10,9 @@ from langchain.chat_models import ChatOpenAI
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 
+from langchain.memory import ConversationBufferMemory
+memory = ConversationBufferMemory(input_key="question", output_key="answer", memory_key="chat_history", return_messages=True)
+
 from talk_codebase.utils import StreamStdOut, load_files
 
 
@@ -75,7 +78,8 @@ def send_question(question, vector_store, openai_api_key, model_name, chat_histo
                        callback_manager=CallbackManager([StreamStdOut()]))
     qa = ConversationalRetrievalChain.from_llm(model,
                                                retriever=vector_store.as_retriever(search_kwargs={"k": 4}),
-                                               return_source_documents=True)
+                                               return_source_documents=True,
+                                               memory=memory)
     result = qa({"question": question, "chat_history": chat_history})
     print('\n' + '\n'.join([f'📄 {os.path.abspath(s.metadata["source"])}:' for s in result["source_documents"]]))
     return result
