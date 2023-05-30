@@ -5,7 +5,7 @@ import fire
 import yaml
 
 
-from talk_codebase.llm import create_vector_store, send_question
+from talk_codebase.llm import Session
 
 
 def get_config():
@@ -36,8 +36,7 @@ def configure():
     save_config(config)
 
 
-def loop(vector_store, api_key, model_name):
-    chat_history = []
+def loop(session:Session):
     while True:
         question = input("👉 ")
         if not question:
@@ -45,12 +44,7 @@ def loop(vector_store, api_key, model_name):
             continue
         if question.lower() in ('exit', 'quit'):
             break
-        if question.lower() in ('reset history'):
-            print("⚠️Chat history reset")
-            chat_history=[]
-            continue
-        result = send_question(question, vector_store, api_key, model_name, chat_history=chat_history)
-        chat_history.append((question, result["answer"]))
+        result = session.send_question(question)
 
 
 def chat(root_dir):
@@ -61,8 +55,8 @@ def chat(root_dir):
         if not (api_key and model_name):
             configure()
             chat(root_dir)
-        vector_store = create_vector_store(root_dir, api_key, model_name)
-        loop(vector_store, api_key, model_name)
+        session = Session(root_dir, api_key, model_name)
+        loop(session)
     except KeyboardInterrupt:
         print("\n🤖 Bye!")
     except Exception as e:
