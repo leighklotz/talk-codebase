@@ -1,4 +1,4 @@
-import os
+import os, sys
 import traceback
 
 import fire
@@ -38,12 +38,19 @@ def configure():
 
 def loop(session:Session):
     while True:
-        question = input("👉 ")
+        try:
+            question = input("👉 ")
+        except EOFError:
+            question = "exit"
+
+        if question.lower() in ('exit', 'quit'):
+            print("\n🤖 Bye!")
+            break
+
+
         if not question:
             print("🤖 Please enter a question.")
             continue
-        if question.lower() in ('exit', 'quit'):
-            break
         result = session.send_question(question)
 
 
