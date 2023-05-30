@@ -47,7 +47,6 @@ def loop(session:Session):
             print("\n🤖 Bye!")
             break
 
-
         if not question:
             print("🤖 Please enter a question.")
             continue
