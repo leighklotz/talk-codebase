@@ -36,15 +36,8 @@ class Session:
         self.vector_store = create_vector_store(self.root_dir, self.openai_api_key, self.model_name)
         self.memory = ConversationBufferMemory(input_key="question", output_key="answer", memory_key="chat_history", return_messages=True)
         self.model = ChatOpenAI(model_name=self.model_name, openai_api_key=self.openai_api_key, streaming=True, callback_manager=CallbackManager([StreamStdOut()]))
-```
-        self.vector_store = create_vector_store(self.root_dir, self.openai_api_key, self.model_name)
-        self.memory = ConversationBufferMemory(input_key="question", output_key="answer", memory_key="chat_history", return_messages=True)
-        self.model = ChatOpenAI(model_name=self.model_name, openai_api_key=self.openai_api_key, streaming=True, callback_manager=CallbackManager([StreamStdOut()]))
         self.retriever = self.vector_store.as_retriever(search_kwargs={"k": 4})
         self.qa = ConversationalRetrievalChain.from_llm(self.model, retriever=self.retriever, return_source_documents=True, memory=self.memory)
-
-
-        
 
     def print_sources(self, result):
         """
